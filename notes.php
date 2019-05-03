@@ -1,26 +1,6 @@
 <?php 
-include_once("config.php");
-session_start();
-if(!isset($_SESSION['username'])){
-   header("Location:login.php");
-}
-$username = $_SESSION['username'];
-if(isset($_POST['upload'])){
-	$_FILES['file']['name'] = $username."_image";
-	$file_name = $_FILES['file']['name'];
-	$file_type = $_FILES['file']['type'];
-	$file_size = $_FILES['file']['size'];
-	$file_tem_loc = $_FILES['file']['tmp_name'];
-	$file_store = "uploads/".$file_name;
-	
-	if($file_type == 'image/jpg' or $file_type == 'image/png' or $file_type == 'image/jpeg'){
-		move_uploaded_file($file_tem_loc, $file_store);
-		$sql = "UPDATE `users` SET `image`='$file_name' WHERE `username`='$username'";
-		$mysqli->query($sql);
-	}else{
-		echo"only images can be uploaded";
-	}
-}
+	include_once("config.php");
+	session_start();
 ?>
 <html>
 <head>
@@ -78,11 +58,18 @@ if(isset($_POST['upload'])){
 </nav>
 
 <div class="container">    
-	<p style="font-size:20px; text-align: center"><b>Username : </b><?php echo"".$username;?></p>	
-	<form action="account.php" method="post" enctype="multipart/form-data">
-			<input type="file" name="file" >
-			<input type="submit" name="upload" value="Upload" >
-	</form>
+	<?php
+		$rows=$mysqli->query("select username,image from users where image is not null");
+	
+		while(list($user,$img)=$rows->fetch_row()){ 
+			echo "Uploaded by user: $user";
+			echo "<br>";
+		?>
+		<img src="<?php echo "uploads/".$img; ?>" height=180 width=150>
+		<?php
+		  echo "<br><br>";
+		}
+	?>
 </div>
 
 

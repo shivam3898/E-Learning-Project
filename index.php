@@ -64,7 +64,7 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.php">Home</a></li>
-		<li><a href="#">All Notes</a></li>
+		<li><a href="notes.php">All Notes</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
 	  
