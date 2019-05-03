@@ -1,3 +1,24 @@
+<?php 
+include_once("config.php");
+session_start();
+
+if(isset($_POST['commit'])){
+		$username = $_POST['username'];
+		$username = mysqli_real_escape_string($mysqli, $username);
+		$password = $_POST['password'];
+		$password = mysqli_real_escape_string($mysqli, $password);
+		$sql = "SELECT * FROM `users` WHERE `username`='$username' and `password`='$password'";
+		$result = $mysqli->query($sql);
+		if($result->num_rows > 0){
+			$_SESSION['username'] = $username;
+			$_SESSION['password'] = $password;
+			header("Location:account.php");
+		}
+		else{
+			echo '<br>Username or password is invalid!';
+		}
+	}
+?>
 <html>
 <head>
   <title>E-Learning Website</title>
@@ -54,7 +75,22 @@
 </nav>
 
 <div class="container">    
-	
+	<form action="login.php" method="post">
+	  <div class="form-group">
+		<label for="email">Email address:</label>
+		<input type="text" name="username" class="form-control" id="email">
+	  </div>
+	  <div class="form-group">
+		<label for="pwd">Password:</label>
+		<input type="password" name="password" class="form-control" id="pwd">
+	  </div>
+	  <div class="form-group form-check">
+		<label class="form-check-label">
+		  <input class="form-check-input" type="checkbox"> Remember me
+		</label>
+	  </div>
+	  <button type="submit" class="btn btn-primary" name="commit">Submit</button>
+	</form>
 </div>
 
 

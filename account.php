@@ -1,3 +1,11 @@
+<?php 
+include_once("config.php");
+session_start();
+if(!isset($_SESSION['username'])){
+   header("Location:login.php");
+}
+$username = $_SESSION['username'];
+?>
 <html>
 <head>
   <title>E-Learning Website</title>
@@ -54,7 +62,7 @@
 </nav>
 
 <div class="container">    
-	
+	<p style="font-size:20px; text-align: center"><b>Username : </b><?php echo"".$username;?></p>
 </div>
 
 
