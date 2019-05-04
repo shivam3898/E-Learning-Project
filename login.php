@@ -1,6 +1,9 @@
 <?php 
 include_once("config.php");
 session_start();
+if(isset($_SESSION['username'])){
+   header("Location:index.php");
+}
 
 if(isset($_POST['commit'])){
 		$username = $_POST['username'];
@@ -12,12 +15,15 @@ if(isset($_POST['commit'])){
 		if($result->num_rows > 0){
 			$_SESSION['username'] = $username;
 			$_SESSION['password'] = $password;
-			header("Location:account.php");
+			header("Location:index.php");
 		}
 		else{
-			echo '<br>Username or password is invalid!';
+			echo '<div class="alert alert-danger alert-dismissible fade in" style="text-align:center">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>ERROR!</strong> Invalid username or password!
+				  </div>';
 		}
-	}
+	}		
 ?>
 <html>
 <head>

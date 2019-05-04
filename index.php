@@ -1,23 +1,9 @@
 <?php 
 	session_start();
 	include_once("config.php"); 
-
-	if(isset($_POST['commit'])){
-		$username = $_POST['username'];
-		$username = mysqli_real_escape_string($mysqli, $username);
-		$password = $_POST['password'];
-		$password = mysqli_real_escape_string($mysqli, $password);
-		$sql = "SELECT * FROM `users` WHERE `username`='$username' and `password`='$password'";
-		$result = $mysqli->query($sql);
-		if($result->num_rows > 0){
-			$_SESSION['username'] = $username;
-			$_SESSION['password'] = $password;
-			header("Location:account.php");
-		}
-		else{
-			echo '<br>Username or password is invalid!';
-		}
-	}
+	if(!isset($_SESSION['username'])){
+   header("Location:login.php");
+}
 ?>
 
 <html>
@@ -70,6 +56,7 @@
 	  
       <ul class="nav navbar-nav navbar-right">
         <li><a href="account.php"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+		<li><a href="logout.php"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
       </ul>
     </div>
   </div>
@@ -128,12 +115,7 @@
 </div><br><br>
 
 <footer class="container-fluid text-center">
-  <form class="form-inline" action="index.php" method="post">
-    <input type="text" name="username" class="form-control" size="50" placeholder="Username">
-	<input type="password" name="password" class="form-control" size="50" placeholder="Password">
-    <input type="submit" name="commit" class="btn btn-danger" value="Sign In">
-	<button type="button" class="btn btn-danger" onclick="window.location.href='signup.php'">Sign Up</button>
-  </form>
+  Anthem e-Learning Platform
 </footer>
 
 </body>

@@ -6,14 +6,14 @@ if(!isset($_SESSION['username'])){
 }
 $username = $_SESSION['username'];
 if(isset($_POST['upload'])){
-	$_FILES['file']['name'] = $username."_image";
+	$_FILES['file']['name'] = $username."_video";
 	$file_name = $_FILES['file']['name'];
 	$file_type = $_FILES['file']['type'];
 	$file_size = $_FILES['file']['size'];
 	$file_tem_loc = $_FILES['file']['tmp_name'];
 	$file_store = "uploads/".$file_name;
 	
-	if($file_type == 'image/jpg' or $file_type == 'application/pdf' or $file_type == 'image/jpeg'){
+	if($file_type == 'video/mp4' or $file_type == 'application/pdf' or $file_type == 'image/jpeg'){
 		move_uploaded_file($file_tem_loc, $file_store);
 		$sql = "UPDATE `users` SET `image`='$file_name' WHERE `username`='$username'";
 		$mysqli->query($sql);
@@ -72,6 +72,7 @@ if(isset($_POST['upload'])){
 	  
       <ul class="nav navbar-nav navbar-right">
         <li><a href="account.php"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+		<li><a href="logout.php"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
       </ul>
     </div>
   </div>

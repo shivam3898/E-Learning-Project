@@ -107,7 +107,7 @@ if(isset($_POST['submit'])){
 	  <div class="checkbox">
 		<label><input type="checkbox"> Remember me</label>
 	  </div>
-	  <button type="submit" class="btn btn-default" name="submit">Submit</button>
+	  <button type="submit" class="btn btn-primary" name="submit">Submit</button>
 	</form>
 </div>
 <script>

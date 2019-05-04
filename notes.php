@@ -1,6 +1,9 @@
 <?php 
 	include_once("config.php");
 	session_start();
+	if(!isset($_SESSION['username'])){
+   header("Location:login.php");
+	}
 ?>
 <html>
 <head>
@@ -52,6 +55,7 @@
 	  
       <ul class="nav navbar-nav navbar-right">
         <li><a href="account.php"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+		<li><a href="logout.php"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
       </ul>
     </div>
   </div>
@@ -65,7 +69,9 @@
 			echo "Uploaded by user: $user";
 			echo "<br>";
 		?>
-		<embed src="<?php echo "uploads/".$img; ?>" height=580 width=550>
+		<video width="320" height="240" controls>
+		<source src="<?php echo "uploads/".$img; ?>">
+		</video>
 		<?php
 		  echo "<br><br>";
 		}
