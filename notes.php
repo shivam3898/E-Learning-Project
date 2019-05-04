@@ -65,7 +65,7 @@
 			echo "Uploaded by user: $user";
 			echo "<br>";
 		?>
-		<img src="<?php echo "uploads/".$img; ?>" height=180 width=150>
+		<embed src="<?php echo "uploads/".$img; ?>" height=580 width=550>
 		<?php
 		  echo "<br><br>";
 		}

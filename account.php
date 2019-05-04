@@ -13,7 +13,7 @@ if(isset($_POST['upload'])){
 	$file_tem_loc = $_FILES['file']['tmp_name'];
 	$file_store = "uploads/".$file_name;
 	
-	if($file_type == 'image/jpg' or $file_type == 'image/png' or $file_type == 'image/jpeg'){
+	if($file_type == 'image/jpg' or $file_type == 'application/pdf' or $file_type == 'image/jpeg'){
 		move_uploaded_file($file_tem_loc, $file_store);
 		$sql = "UPDATE `users` SET `image`='$file_name' WHERE `username`='$username'";
 		$mysqli->query($sql);
