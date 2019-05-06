@@ -3,7 +3,7 @@
 	include_once("config.php"); 
 	if(!isset($_SESSION['username'])){
    header("Location:login.php");
-}
+   }
 ?>
 
 <html>
@@ -66,53 +66,119 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="panel panel-primary">
-        <div class="panel-heading">Something</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Something</div>
+        <div class="panel-heading">Videos</div>
+            <?php
+          $rows=$mysqli->query("select uploaded_by,name,type from files");
+      
+        while(list($user,$name,$type)=$rows->fetch_row()){
+              if($user == $_SESSION['username']){
+                if($type == 'video/mp4'){    
+                    echo "<br>";
+        ?>
+                    <video width="320" height="240" controls>
+                    <source src="<?php echo "uploads/videos/".$name; ?>">
+                    </video><br>
+                    <form method="post" action="index.php">
+                      <input type="submit" name="delete" value="delete">
+                    </form> 
+        <?php
+                    if(isset($_POST['delete'])){
+                      $sql = "delete from files where name='$name'";
+                      $mysqli->query($sql);  
+                      $folder_path = "uploads/videos/"; 
+                      $file='$name';                        
+                      // List of name of files inside 
+                      // specified folder 
+                      $files = glob($folder_path.''.$file);  
+                        
+                      // Deleting all the files in the list 
+                      foreach($files as $file) { 
+                        
+                          if(is_file($file))  
+                          
+                              // Delete the given file 
+                              unlink($file);  
+                      }  
+                      header("location:index.php");
+                    } 
+                    echo "<br><br>";
+                }
+              }
+        }
+        ?>
       </div>
     </div>
     <div class="col-sm-4"> 
       <div class="panel panel-primary">
-        <div class="panel-heading">Something</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Something</div>
+        <div class="panel-heading">Pdfs</div>
+        <?php
+		      $rows=$mysqli->query("select uploaded_by,name,type from files");
+		      while(list($user,$name,$type)=$rows->fetch_row()){
+            if($user == $_SESSION['username']){
+            if($type == 'application/pdf'){    
+                echo "<br>";
+        ?>
+        <object width="320" height="400" data=<?php echo "uploads/pdfs/".$name; ?>></object>
+        <form method="post" action="index.php">
+          <input type="submit" name="delete" value="delete">
+        </form>
+        <?php
+              if(isset($_POST['delete'])){
+                $sql = "delete from files where name='$name'";
+                $mysqli->query($sql);
+                $files = glob('uploads/pdfs'.$name);      
+                foreach($files as $file) { 
+                  
+                    if(is_file($file))   
+                        unlink($file);  
+                }
+                header("location:index.php");
+              }
+                echo "<br><br>";
+            }
+          }
+        }
+	      ?>
       </div>
     </div>
     <div class="col-sm-4"> 
       <div class="panel panel-primary">
-        <div class="panel-heading">Something</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Something</div>
+        <div class="panel-heading">Images</div>
+        <?php
+	      	$rows=$mysqli->query("select uploaded_by,name,type from files");	
+		      while(list($user,$name,$type)=$rows->fetch_row()){
+            if($user == $_SESSION['username']){
+            if($type == 'image/jpeg'){    
+                echo "<br>";
+        ?>
+        <object width="320" height="400" data=<?php echo "uploads/images/".$name; ?>></object>
+        <form method="post" action="index.php">
+          <input type="submit" name="delete" value="delete">
+        </form>
+        <?php
+                if(isset($_POST['delete'])){
+                  $sql = "delete from files where name='$name'";
+                  $mysqli->query($sql);
+                  $files = glob('uploads/images'.$name);      
+                  foreach($files as $file) { 
+                    
+                      if(is_file($file))   
+                          unlink($file);  
+                  }
+                  header("location:index.php");
+                }
+                echo "<br><br>";
+            }
+          }
+        }
+	      ?>
       </div>
     </div>
   </div>
-</div><br>
+</div>
 
-<div class="container">    
-  <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">Something</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Something</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-primary">
-        <div class="panel-heading">Something</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Something</div>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-primary">
-        <div class="panel-heading">Something</div>
-        <div class="panel-body"><img src="https://placehold.it/150x80?text=IMAGE" class="img-responsive" style="width:100%" alt="Image"></div>
-        <div class="panel-footer">Something</div>
-      </div>
-    </div>
-  </div>
-</div><br><br>
+
+<br><br>
 
 <footer class="container-fluid text-center">
   Anthem e-Learning Platform

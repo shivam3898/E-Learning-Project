@@ -83,7 +83,7 @@ if(isset($_POST['commit'])){
 <div class="container">    
 	<form action="login.php" method="post">
 	  <div class="form-group">
-		<label for="email">Email address:</label>
+		<label for="email">Username :</label>
 		<input type="text" name="username" class="form-control" id="email">
 	  </div>
 	  <div class="form-group">

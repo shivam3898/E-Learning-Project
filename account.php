@@ -6,19 +6,26 @@ if(!isset($_SESSION['username'])){
 }
 $username = $_SESSION['username'];
 if(isset($_POST['upload'])){
-	$_FILES['file']['name'] = $username."_video";
+	$_FILES['file']['name'] = $_POST['file_name'];
 	$file_name = $_FILES['file']['name'];
 	$file_type = $_FILES['file']['type'];
 	$file_size = $_FILES['file']['size'];
-	$file_tem_loc = $_FILES['file']['tmp_name'];
-	$file_store = "uploads/".$file_name;
+  $file_tem_loc = $_FILES['file']['tmp_name'];
+  if($file_type == 'video/mp4'){
+    $file_store = "uploads/videos/".$file_name;
+  }elseif($file_type == 'application/pdf'){
+    $file_store = "uploads/pdfs/".$file_name;
+  }else{
+    $file_store = "uploads/images/".$file_name;
+  }
 	
 	if($file_type == 'video/mp4' or $file_type == 'application/pdf' or $file_type == 'image/jpeg'){
 		move_uploaded_file($file_tem_loc, $file_store);
-		$sql = "UPDATE `users` SET `image`='$file_name' WHERE `username`='$username'";
+		$sql = "insert into files values('$file_name', '$username', '$file_type')";
 		$mysqli->query($sql);
 	}else{
-		echo"only images can be uploaded";
+    echo"<br>Unsupported file type";
+    echo"<br>".$file_type;
 	}
 }
 ?>
@@ -80,10 +87,13 @@ if(isset($_POST['upload'])){
 
 <div class="container">    
 	<p style="font-size:20px; text-align: center"><b>Username : </b><?php echo"".$username;?></p>	
-	<form action="account.php" method="post" enctype="multipart/form-data">
-			<input type="file" name="file" >
-			<input type="submit" name="upload" value="Upload" >
-	</form>
+  <a href="#demo" class="btn btn-info" data-toggle="collapse" >Upload file</a>
+			<div id="demo" class="collapse">
+			<form action="account.php" method="post" enctype="multipart/form-data">
+        <input type="text" name="file_name" placeholder="Enter File Name *" required>
+				<input type="file" name="file" required>
+				<input type="submit" name="upload" value="Upload" >
+      </form>
 </div>
 
 

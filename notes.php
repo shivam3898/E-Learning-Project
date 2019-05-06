@@ -62,20 +62,10 @@
 </nav>
 
 <div class="container">    
-	<?php
-		$rows=$mysqli->query("select username,image from users where image is not null");
-	
-		while(list($user,$img)=$rows->fetch_row()){ 
-			echo "Uploaded by user: $user";
-			echo "<br>";
-		?>
-		<video width="320" height="240" controls>
-		<source src="<?php echo "uploads/".$img; ?>">
-		</video>
-		<?php
-		  echo "<br><br>";
-		}
-	?>
+
+<button type="button" class="btn btn-primary" onclick="window.location.href='videos.php'">Videos</button>
+<button type="button" class="btn btn-primary" onclick="window.location.href='pdfs.php'">Pdfs</button>
+<button type="button" class="btn btn-primary" onclick="window.location.href='images.php'">Images</button>
 </div>
 
 
