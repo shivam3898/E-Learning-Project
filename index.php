@@ -8,32 +8,21 @@
 
 <html>
 <head>
-  <title>E-Learning Website</title>
+  <title>Anthem</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <style>
-    .navbar {
-      margin-bottom: 50px;
-      border-radius: 0;
-    }
-     .jumbotron {
-      margin-bottom: 0;
-    }
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="icon" type="image/ico" href="favicon.ico" />
 </head>
 <body>
 
 <div class="jumbotron">
   <div class="container text-center">
-    <h1>E-Learning Website</h1>      
-    <p>B.Tech 6th Semester</p>
+    <h1>ANTHEM</h1>      
+    <p>A Shared e-Learning Platform</p>
   </div>
 </div>
 
@@ -50,7 +39,15 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.php">Home</a></li>
-		<li><a href="notes.php">All Notes</a></li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" >All Notes
+			<span class="caret"></span></a>
+			<ul class="dropdown-menu">
+			  <li><a href="videos.php">Videos</a></li>
+			  <li><a href="pdfs.php">PDFs</a></li>
+			  <li><a href="images.php">Images</a></li>
+			</ul>
+		  </li>
         <li><a href="about.html">About</a></li>
       </ul>
 	  
@@ -62,126 +59,101 @@
   </div>
 </nav>
 
-<div class="container">    
+<div class="container">   
+<div class="alert alert-info" style="text-align:center">
+    <strong>YOUR CONTRIBUTIONS</strong><br>Click to expand.
+  </div> 
+  <a class="btn btn-primary btn-block" data-toggle="collapse" href="#vid" role="button" aria-expanded="false" aria-controls="vid">
+    Videos
+  </a>
+  <br>
+  
+  <div class="collapse" id="vid">
+  <div class="card card-body">
   <div class="row">
-    <div class="col-sm-4">
-      <div class="panel panel-primary">
-        <div class="panel-heading">Videos</div>
-            <?php
+    <?php
           $rows=$mysqli->query("select uploaded_by,name,type from files");
       
         while(list($user,$name,$type)=$rows->fetch_row()){
               if($user == $_SESSION['username']){
-                if($type == 'video/mp4'){    
-                    echo "<br>";
-        ?>
-                    <video width="320" height="240" controls>
+                if($type == 'video/mp4'){  
+	?>
+					<div class="col-sm-4">				
+
+                    <video width="100%" controls>
                     <source src="<?php echo "uploads/videos/".$name; ?>">
-                    </video><br>
-                    <form method="post" action="index.php">
-                      <input type="submit" name="delete" value="delete">
-                    </form> 
-        <?php
-                    if(isset($_POST['delete'])){
-                      $sql = "delete from files where name='$name'";
-                      $mysqli->query($sql);  
-                      $folder_path = "uploads/videos/"; 
-                      $file='$name';                        
-                      // List of name of files inside 
-                      // specified folder 
-                      $files = glob($folder_path.''.$file);  
-                        
-                      // Deleting all the files in the list 
-                      foreach($files as $file) { 
-                        
-                          if(is_file($file))  
-                          
-                              // Delete the given file 
-                              unlink($file);  
-                      }  
-                      header("location:index.php");
-                    } 
-                    echo "<br><br>";
+                    </video>
+					<button type="button" class="btn btn-primary btn-block"><?php echo "$name"; ?></button>
+					</div>
+        <?php 
                 }
               }
         }
         ?>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-primary">
-        <div class="panel-heading">Pdfs</div>
-        <?php
-		      $rows=$mysqli->query("select uploaded_by,name,type from files");
-		      while(list($user,$name,$type)=$rows->fetch_row()){
-            if($user == $_SESSION['username']){
-            if($type == 'application/pdf'){    
-                echo "<br>";
-        ?>
-        <object width="320" height="400" data=<?php echo "uploads/pdfs/".$name; ?>></object>
-        <form method="post" action="index.php">
-          <input type="submit" name="delete" value="delete">
-        </form>
-        <?php
-              if(isset($_POST['delete'])){
-                $sql = "delete from files where name='$name'";
-                $mysqli->query($sql);
-                $files = glob('uploads/pdfs'.$name);      
-                foreach($files as $file) { 
-                  
-                    if(is_file($file))   
-                        unlink($file);  
-                }
-                header("location:index.php");
-              }
-                echo "<br><br>";
-            }
-          }
-        }
-	      ?>
-      </div>
-    </div>
-    <div class="col-sm-4"> 
-      <div class="panel panel-primary">
-        <div class="panel-heading">Images</div>
-        <?php
-	      	$rows=$mysqli->query("select uploaded_by,name,type from files");	
-		      while(list($user,$name,$type)=$rows->fetch_row()){
-            if($user == $_SESSION['username']){
-            if($type == 'image/jpeg'){    
-                echo "<br>";
-        ?>
-        <object width="320" height="400" data=<?php echo "uploads/images/".$name; ?>></object>
-        <form method="post" action="index.php">
-          <input type="submit" name="delete" value="delete">
-        </form>
-        <?php
-                if(isset($_POST['delete'])){
-                  $sql = "delete from files where name='$name'";
-                  $mysqli->query($sql);
-                  $files = glob('uploads/images'.$name);      
-                  foreach($files as $file) { 
-                    
-                      if(is_file($file))   
-                          unlink($file);  
-                  }
-                  header("location:index.php");
-                }
-                echo "<br><br>";
-            }
-          }
-        }
-	      ?>
-      </div>
-    </div>
+	</div>
   </div>
+</div>
+<br>
+<a class="btn btn-primary btn-block" data-toggle="collapse" href="#pdf" role="button" aria-expanded="false" aria-controls="pdf">
+    PDFs
+  </a>
+  <br>
+<div class="collapse" id="pdf">
+	<div class="card card-body">
+		<div class="row">
+			<?php
+				  $rows=$mysqli->query("select uploaded_by,name,type from files");
+				  while(list($user,$name,$type)=$rows->fetch_row()){
+				if($user == $_SESSION['username']){
+				if($type == 'application/pdf'){  
+			?>
+			<div class="col-sm-4">
+			<embed width="360" height="400" src=<?php echo "uploads/pdfs/".$name; ?>>
+			<button type="button" class="btn btn-primary btn-block"><?php echo "$name"; ?></button>
+			<br><br>
+			</div>
+			<?php
+				}
+			  }
+			}
+			?>
+		</div>
+	</div>
+</div>
+<br>
+<a class="btn btn-primary btn-block" data-toggle="collapse" href="#imgs" role="button" aria-expanded="false" aria-controls="imgs">
+    Images
+  </a>
+  <br>
+<div class="collapse" id="imgs">
+	<div class="card card-body">
+		<div class="row">
+			<?php
+				$rows=$mysqli->query("select uploaded_by,name,type from files");	
+				  while(list($user,$name,$type)=$rows->fetch_row()){
+				if($user == $_SESSION['username']){
+				if($type == 'image/jpeg'){    
+			?>
+			<div class="col-sm-4">
+			<img width="360" height="260" src=<?php echo "uploads/images/".$name; ?>>
+			<button type="button" class="btn btn-primary btn-block"><?php echo "$name"; ?></button>
+			</div>
+			<?php
+				}
+			  }
+			}
+	      ?>
+		</div>
+	</div>
+</div>		
+
 </div>
 
 
 <br><br>
 
 <footer class="container-fluid text-center">
-  Anthem e-Learning Platform
+  <h5>Anthem e-Learning Platform</h5>
 </footer>
 
 </body>

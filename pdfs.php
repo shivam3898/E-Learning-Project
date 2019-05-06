@@ -7,32 +7,21 @@
 ?>
 <html>
 <head>
-  <title>E-Learning Website</title>
+  <title>PDFs</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <style>
-    .navbar {
-      margin-bottom: 50px;
-      border-radius: 0;
-    }
-     .jumbotron {
-      margin-bottom: 0;
-    }
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="icon" type="image/ico" href="favicon.ico" />
 </head>
 <body>
 
 <div class="jumbotron">
   <div class="container text-center">
-    <h1>E-Learning Website</h1>      
-    <p>B.Tech 6th Semester</p>
+    <h1>ANTHEM</h1>      
+    <p>A Shared e-Learning Platform</p>
   </div>
 </div>
 
@@ -49,37 +38,48 @@
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.php">Home</a></li>
-		<li><a href="notes.php">All Notes</a></li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" >All Notes
+			<span class="caret"></span></a>
+			<ul class="dropdown-menu">
+			  <li><a href="videos.php">Videos</a></li>
+			  <li><a href="pdfs.php">PDFs</a></li>
+			  <li><a href="images.php">Images</a></li>
+			</ul>
+		  </li>
         <li><a href="about.html">About</a></li>
       </ul>
 	  
       <ul class="nav navbar-nav navbar-right">
         <li><a href="account.php"><span class="glyphicon glyphicon-user"></span> Your Account</a></li>
+		<li><a href="logout.php"><span class="glyphicon glyphicon-off"></span> Logout</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="container">    
+<div class="container-fluid text-center"> 
+	<div class="row">
+		<?php
+		$rows=$mysqli->query("select uploaded_by,name,type from files");
 	
+		while(list($user,$name,$type)=$rows->fetch_row()){
+            if($type == 'application/pdf'){   
+		?>			
+		<div class="col-sm-4">
+                <embed src=<?php echo "uploads/pdfs/".$name; ?> width="420" height="400">
+				<button type="button" class="btn btn-primary btn-block"><?php echo "$name by $user"; ?></button>
+				<br><br>
+		</div>
+        <?php
+            }
+		}
+	?>
+	</div>
 </div>
 
 
 <footer class="container-fluid text-center">
-    	<?php
-		$rows=$mysqli->query("select uploaded_by,name,type from files");
-	
-		while(list($user,$name,$type)=$rows->fetch_row()){
-            if($type == 'application/pdf'){    
-                echo "Uploaded by user: $user";
-                echo "<br>";
-        ?>
-                <object width="400" height="400" data=<?php echo "uploads/pdfs/".$name; ?>></object>
-        <?php
-                echo "<br><br>";
-            }
-		}
-	?>
     <p>Anthem e-Learning Platform</p>
 </footer>
 

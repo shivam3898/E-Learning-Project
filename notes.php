@@ -7,32 +7,21 @@
 ?>
 <html>
 <head>
-  <title>E-Learning Website</title>
+  <title>Notes</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-  <style>
-    .navbar {
-      margin-bottom: 50px;
-      border-radius: 0;
-    }
-     .jumbotron {
-      margin-bottom: 0;
-    }
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="icon" type="image/ico" href="favicon.ico" />
 </head>
 <body>
 
 <div class="jumbotron">
   <div class="container text-center">
-    <h1>E-Learning Website</h1>      
-    <p>B.Tech 6th Semester</p>
+    <h1>ANTHEM</h1>      
+    <p>A Shared e-Learning Platform</p>
   </div>
 </div>
 
@@ -63,9 +52,9 @@
 
 <div class="container">    
 
-<button type="button" class="btn btn-primary" onclick="window.location.href='videos.php'">Videos</button>
-<button type="button" class="btn btn-primary" onclick="window.location.href='pdfs.php'">Pdfs</button>
-<button type="button" class="btn btn-primary" onclick="window.location.href='images.php'">Images</button>
+<button type="button" class="btn btn-primary btn-block" onclick="window.location.href='videos.php'">Videos</button>
+<button type="button" class="btn btn-primary btn-block" onclick="window.location.href='pdfs.php'">Pdfs</button>
+<button type="button" class="btn btn-primary btn-block" onclick="window.location.href='images.php'">Images</button>
 </div>
 
 

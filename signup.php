@@ -9,12 +9,18 @@ if(isset($_POST['submit'])){
  $cpass = $_POST['confirm_password'];
  $cpass = mysqli_real_escape_string($mysqli, $cpass);	
     if(empty($username) || empty($password) || empty($cpass)){
-        echo "Some fileds are empty.";
+        echo '<div class="alert alert-danger alert-dismissible fade in" style="text-align:center">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>ERROR!</strong> Some fields are empty!
+				  </div>';
     }
     else{
 		if($password!=$cpass)
 		{
-			echo "Password do not match";
+			echo '<div class="alert alert-danger alert-dismissible fade in" style="text-align:center">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>ERROR!</strong> Passwords do not match!
+				  </div>';
 		}
 		else{
 			$sql = "INSERT INTO `users` (`username`, `password`) VALUES ('$username', '$password')";
@@ -23,7 +29,10 @@ if(isset($_POST['submit'])){
 				echo "<script>window.location.href='index.php';</script>";
 			}
 			elseif(($mysqli->error) == "Duplicate entry '$username' for key 'PRIMARY'"){
-				echo '<br>Username Taken';
+				echo '<div class="alert alert-danger alert-dismissible fade in" style="text-align:center">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>ERROR!</strong> Username already taken!
+				  </div>';
 			}
 			else{
 				echo "Error....".$mysqli->error;
@@ -35,7 +44,7 @@ if(isset($_POST['submit'])){
 ?>
 <html>
 <head>
-  <title>E-Learning Website</title>
+  <title>Sign Up</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -43,26 +52,15 @@ if(isset($_POST['submit'])){
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <style>
-    .navbar {
-      margin-bottom: 50px;
-      border-radius: 0;
-    }
-     .jumbotron {
-      margin-bottom: 0;
-    }
-    footer {
-      background-color: #f2f2f2;
-      padding: 25px;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="icon" type="image/ico" href="favicon.ico" />
 </head>
 <body>
 
 <div class="jumbotron">
   <div class="container text-center">
-    <h1>E-Learning Website</h1>      
-    <p>B.Tech 6th Semester</p>
+    <h1>ANTHEM</h1>      
+    <p>A Shared e-Learning Platform</p>
   </div>
 </div>
 
@@ -79,7 +77,15 @@ if(isset($_POST['submit'])){
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.php">Home</a></li>
-		<li><a href="notes.php">All Notes</a></li>
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" >All Notes
+			<span class="caret"></span></a>
+			<ul class="dropdown-menu">
+			  <li><a href="videos.php">Videos</a></li>
+			  <li><a href="pdfs.php">PDFs</a></li>
+			  <li><a href="images.php">Images</a></li>
+			</ul>
+		  </li>
         <li><a href="about.html">About</a></li>
       </ul>
 	  
@@ -103,9 +109,6 @@ if(isset($_POST['submit'])){
 	  <div class="form-group">
 		<label for="pwd">Confirm Password:</label>
 		<input name="confirm_password" type="password" class="form-control" id="pwd2">
-	  </div>
-	  <div class="checkbox">
-		<label><input type="checkbox"> Remember me</label>
 	  </div>
 	  <button type="submit" class="btn btn-primary" name="submit">Submit</button>
 	</form>
