@@ -22,12 +22,65 @@ if(isset($_POST['upload'])){
 	if($file_type == 'video/mp4' or $file_type == 'application/pdf' or $file_type == 'image/jpeg'){
 		move_uploaded_file($file_tem_loc, $file_store);
 		$sql = "insert into files values('$file_name', '$username', '$file_type')";
-		$mysqli->query($sql);
-	}else{
+		if($mysqli->query($sql)){
+			echo '<div class="alert alert-success alert-dismissible fade in" style="text-align:center;">
+					<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>Success!</strong> File Uploaded Successfully.
+				  </div>';
+		}
+				elseif(($mysqli->error) == "Duplicate entry '$file_name' for key 'PRIMARY'"){
+				echo '<div class="alert alert-danger alert-dismissible fade in" style="text-align:center">
+					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>ERROR!</strong> File name already taken!
+				  </div>';
+			}
+	}
+	else{
     echo '<div class="alert alert-danger alert-dismissible fade in" style="text-align:center">
 					<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 					<strong>ERROR!</strong> Unsupported file type! <br>
 					Only mp4 videos, PDFs and jpeg images can be uploaded.</div>';
+	}
+}
+if(isset($_POST['delete'])){
+	$fileD = $_POST['fileDel'];
+	$rows=$mysqli->query("select uploaded_by,name,type from files");
+	while(list($user,$name,$type)=$rows->fetch_row()){
+              if($user == $_SESSION['username']){
+                if($type == 'video/mp4'){ 
+					if($name==$fileD){
+					 $sql = "delete from files where name='$name'";
+                      $mysqli->query($sql); 
+					  unlink("uploads/videos/".$name);
+					  echo '<div class="alert alert-success alert-dismissible fade in" style="text-align:center;">
+					<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>Success!</strong> File Deleted Successfully.
+				  </div>';
+					}
+				}
+				else if($type == 'application/pdf'){ 
+					if($name==$fileD){
+					 $sql = "delete from files where name='$name'";
+                      $mysqli->query($sql); 
+					  unlink("uploads/pdfs/".$name);
+					  echo '<div class="alert alert-success alert-dismissible fade in" style="text-align:center;">
+					<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>Success!</strong> File Deleted Successfully.
+				  </div>';
+					}
+				}
+				else if($type == 'image/jpeg'){ 
+					if($name==$fileD){
+					 $sql = "delete from files where name='$name'";
+                      $mysqli->query($sql); 
+					  unlink("uploads/images/".$name);
+					  echo '<div class="alert alert-success alert-dismissible fade in" style="text-align:center;">
+					<a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+					<strong>Success!</strong> File Deleted Successfully.
+				  </div>';
+					}
+				}
+			}
 	}
 }
 ?>
@@ -89,14 +142,34 @@ if(isset($_POST['upload'])){
 		<p style="font-size:20px; text-align: center"><b>Username : </b><?php echo"".$username;?></p>
 		Upload mp4 video file/PDF/jpeg image so that others can learn as well.
 	</div>
-	  <a href="#demo" class="btn btn-primary" data-toggle="collapse">Upload file</a>
-			<div id="demo" class="collapse">
-			<form action="account.php" method="post" enctype="multipart/form-data">
-				<input type="text" name="file_name" placeholder="Enter File Name *" required><br>
-				<input type="file" name="file" required>
-				<input type="submit" name="upload" value="Upload" >
-			</form>	  
+	<a href="#demo" class="btn btn-primary" data-toggle="collapse">Upload file</a>
+	<a href="#demo2" class="btn btn-primary" data-toggle="collapse">Delete file</a>
+	<div id="demo" class="collapse">
+		<form action="account.php" method="post" enctype="multipart/form-data">
+			<input type="text" name="file_name" placeholder="Enter File Name *" required><br>
+			<input type="file" name="file" required>
+			<input type="submit" name="upload" value="Upload" >
+		</form>	  
 	</div>
+	
+	<div id="demo2" class="collapse">
+			<form method="post" action="account.php">	
+				<select name="fileDel">
+				<?php
+				$rows=$mysqli->query("select uploaded_by,name,type from files");
+				while(list($users,$names,$types)=$rows->fetch_row()){
+					if($users == $_SESSION['username']){
+					?>
+					<option value="<?php echo $names?>"><?php echo $names?></option>
+				<?php
+					}
+				}
+				?>
+				</select>
+				<input type="submit" name="delete" value="Delete">
+			</form>    
+	</div>
+	
 </div>
 
 <footer class="container-fluid text-center">
